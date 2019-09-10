@@ -16,24 +16,6 @@ from datetime import timedelta
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Celery
-CELERY_TIMEZONE = 'Asia/Shanghai' 
-CELERY_BROKER_URL = 'redis://localhost:6379/3'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/4'
-
-CELERY_BEAT_SCHEDULE = {
-    'add-every-5-seconds': {
-        'task': 'demoapp.tasks.add',
-        'schedule': timedelta(seconds=5),
-        'args': (16, 16)
-    },
-    'mul-every-5-seconds': {
-        'task': 'demoapp.tasks.mul',
-        'schedule': timedelta(seconds=5),
-        'args': (6, 10)
-    }
-}
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -54,18 +36,46 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'demoapp',
+    'demoapp.apps.DemoappConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = ('*')
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+)
 
 ROOT_URLCONF = 'proj.urls'
 
@@ -136,3 +146,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Celery
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_BROKER_URL = 'redis://localhost:6379/3'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/4'
+
+CELERY_BEAT_SCHEDULE = {
+    'add-every-5-seconds': {
+        'task': 'demoapp.tasks.add',
+        'schedule': timedelta(seconds=5),
+        'args': (16, 16)
+    },
+    'mul-every-5-seconds': {
+        'task': 'demoapp.tasks.mul',
+        'schedule': timedelta(seconds=5),
+        'args': (6, 10)
+    }
+}
