@@ -22,5 +22,5 @@ def demo(request):
             ]
         }
     }
-    response = HttpResponse(json.dumps(jsonStr).encode('utf8'), content_type='application/json;charset=utf-8')
+    response = HttpResponse(json.dumps(jsonStr).encode('utf8'), content_type='application/json')
     return response
